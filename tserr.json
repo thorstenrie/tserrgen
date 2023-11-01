@@ -1,0 +1,346 @@
+{
+    "tserr":
+    {
+        "path": "../tserrnew",
+        "version": "1.14.0",
+        "errors": [
+            {
+                "name": "Check",
+                "comment": "Check can be used for negative validations on an object.",
+                "code": "http.StatusPreconditionFailed",
+                "message":  "check %v failed: %w",
+                "param": [
+                    {
+                        "name": "F",
+                        "type": "string",
+                        "comment": "F is the name of the object causing the failed check, for example, a filename"
+                    },
+                    {
+                        "name": "Err",
+                        "type": "error",
+                        "comment": "Err is the error causing the failed check, for example, file is a directory"
+                    }
+                ]
+            },
+            {
+                "name": "NotExistent",
+                "comment": "NotExistent can be used if an required object does not exist, for example, a file.",
+                "code": "http.StatusNotFound",
+                "message": "%v does not exist",
+                "param": [
+                    {
+                        "name": "F",
+                        "type": "string",
+                        "comment": "F is the name of the object, for example, key name"
+                    }
+                ]
+            },
+            {
+                "name": "Op",
+                "comment": "Op can be used for failed operations on an object.",
+                "code": "http.StatusUnprocessableEntity",
+                "message": "%v %v failed: %w",
+                "param": [
+                    {
+                        "name": "Op",
+                        "type": "string",
+                        "comment": "Op is the name of the failed operation, for example, WriteStr"
+                    },
+                    {
+                        "name": "Fn",
+                        "type": "string",
+                        "comment": "Fn is the name of the object passed to the operation, for example, a filename"
+                    },
+                    {
+                        "name": "Err",
+                        "type": "error",
+                        "comment": "Err is the error retrieved from the failed operation, for example, file does not exist"
+                    }
+                ]
+            },
+            {
+                "name": "NilFailed",
+                "comment": "NilFailed can be used if the function implementing an operation returns nil, but an error is expected. A default use case are Test functions.",
+                "code": "http.StatusInternalServerError",
+                "message": "%v returned nil, but error expected",
+                "param": [
+                    {
+                        "name": "Op",
+                        "type": "string",
+                        "comment": "Op is the name of the operation, for example, ExistsFile"
+                    }
+                ]
+            },
+            {
+                "name": "Empty",
+                "comment": "Empty can be used if a required object is empty but not allowed to be empty, for example, an input argument of type string.",
+                "code": "http.StatusBadRequest",
+                "message": "%v cannot be empty",
+                "param": [
+                    {
+                        "name": "F",
+                        "type": "string",
+                        "comment": "F is the name of the empty object, for example, filename"
+                    }
+                ]
+            },
+            {
+                "name": "EqualStr",
+                "comment": "EqualStr can be used if a string fails to be equal to an expected string.",
+                "code": "http.StatusInternalServerError",
+                "message": "value of %v is %v, but expected to be equal to %v",
+                "param": [
+                    {
+                        "name": "Var",
+                        "type": "string",
+                        "comment": "Var is the name of the variable"
+                    },
+                    {
+                        "name": "Actual",
+                        "type": "string",
+                        "comment": "Actual is the actual value of Var"
+                    },
+                    {
+                        "name": "Want",
+                        "type": "string",
+                        "comment": "Want is the expected value of Var"
+                    }
+                ]
+            },
+            {
+                "name": "TypeNotMatching",
+                "comment": "TypeNotMatching can be used if the type of an object does not match the expected type",
+                "code": "http.StatusMethodNotAllowed",
+                "message": "%v does not match type %v",
+                "param": [
+                    {
+                        "name": "Actual",
+                        "type": "string",
+                        "comment": "Actual is the name of the actual type of the object, for example, a file"
+                    },
+                    {
+                        "name": "Want",
+                        "type": "string",
+                        "comment": "Want is the name of the expected, wanted or required type the object should be, for example, a directory"
+                    }
+                ]
+            },
+            {
+                "name": "Forbidden",
+                "comment": "Forbidden can be used if an operation on an object is forbidden.",
+                "code": "http.StatusForbidden",
+                "message": "operation on %v forbidden",
+                "param": [
+                    {
+                        "name": "F",
+                        "type": "string",
+                        "comment": "F is the name of the forbidden object, for example, a directory or filename"
+                    }
+                ]
+            },
+            {
+                "name": "Return",
+                "comment": "Return can be used if an operation returns an actual value, but another return value is expected.",
+                "code": "http.StatusInternalServerError",
+                "message": "%v returned %v, but %v expected",
+                "param": [
+                    {
+                        "name": "Op",
+                        "type": "string",
+                        "comment": "Op is the operation"
+                    },
+                    {
+                        "name": "Actual",
+                        "type": "string",
+                        "comment": "Actual is the actual return value returned by Op"
+                    },
+                    {
+                        "name": "Want",
+                        "type": "string",
+                        "comment": "Want is the expected return value from Op"
+                    }
+                ]
+            },
+            {
+                "name": "Higher",
+                "comment": "Higher can be used if an integer fails to at least be equal or be higher than a defined lower bound.",
+                "code": "http.StatusInternalServerError",
+                "message": "value of %v is %d, but expected to be at least equal to or higher than %d",
+                "param": [
+                    {
+                        "name": "Var",
+                        "type": "string",
+                        "comment": "Var is the name of the variable"
+                    },
+                    {
+                        "name": "Actual",
+                        "type": "int64",
+                        "comment": "Actual is the actual of Var"
+                    },
+                    {
+                        "name": "LowerBound",
+                        "type": "int64",
+                        "comment": "LowerBound is the lower bound. Actual is expected to be equal or higher than Lowerbound"
+                    }
+                ]
+            },
+            {
+                "name": "Equal",
+                "comment": "Equal can be used if an integer tails to be equal to an expected value.",
+                "code": "http.StatusInternalServerError",
+                "message": "value of %v is %d, but expected to be equal to %d",
+                "param": [
+                    {
+                        "name": "Var",
+                        "type": "string",
+                        "comment": "Var is the name of the variable"
+                    },
+                    {
+                        "name": "Actual",
+                        "type": "int64",
+                        "comment": "Actual is the actual value of Var"
+                    },
+                    {
+                        "name": "Want",
+                        "type": "int64",
+                        "comment": "Want is the expected value of Var"
+                    }
+                ]
+            },
+            {
+                "name": "Lower",
+                "comment": "Lower can be used if an integer fails to be lower than a defined higher bound.",
+                "code": "http.StatusInternalServerError",
+                "message": "value of %v is %d, but expected to be lower than %d",
+                "param": [
+                    {
+                        "name": "Var",
+                        "type": "string",
+                        "comment": "Var is the name of the variable"
+                    },
+                    {
+                        "name": "Actual",
+                        "type": "int64",
+                        "comment": "Actual is the actual value of Var"
+                    },
+                    {
+                        "name": "Want",
+                        "type": "int64",
+                        "comment": "Want is the expected value of Var"
+                    }
+                ]
+            },
+            {
+                "name": "NotSet",
+                "comment": "NotSet can be used if a required object is not set, for example, an environment variable.",
+                "code": "http.StatusNotFound",
+                "message": "%v not set",
+                "param": [
+                    {
+                        "name": "F",
+                        "type": "string",
+                        "comment": "F is the name of the object, for example, the name of the environment variable"
+                    }
+                ]
+            },
+            {
+                "name": "NotAvailable",
+                "comment": "NotAvailable can be used if a service is not available.",
+                "code": "http.StatusServiceUnavailable",
+                "message": "%v not available: %w",
+                "param": [
+                    {
+                        "name": "S",
+                        "type": "string",
+                        "comment": "S is the name of the service not available"
+                    },
+                    {
+                        "name": "Err",
+                        "type": "error",
+                        "comment": "Err is the error provided by the service"
+                    }
+                ]
+            },
+            {
+                "name": "Equalf",
+                "comment": "Equalf can be used if a float value is not equal to an expected value",
+                "code": "http.StatusInternalServerError",
+                "message": "value of %v is %f, but expected to be equal to %f",
+                "param": [
+                    {
+                        "name": "Var",
+                        "type": "string",
+                        "comment": "Var is the name of the variable"
+                    },
+                    {
+                        "name": "Actual",
+                        "type": "float64",
+                        "comment": "Actual is the actual value of Var"
+                    },
+                    {
+                        "name": "Want",
+                        "type": "float64",
+                        "comment": "Want is the expected value of Var"
+                    }
+                ]
+            },
+            {
+                "name": "NonPrintable",
+                "comment": "NonPrintable can be used if a string is allowed to only contain printable runes, but actually contains non-printable runes.",
+                "code": "http.StatusBadRequest",
+                "message": "%v contains non-printable runes, but only printable runes are allowed",
+                "param":  [
+                    {
+                        "name": "F",
+                        "type": "string",
+                        "comment": "F is the name of the string allowed to only contain printable runes"
+                    }
+                ]
+            },
+            {
+                "name": "NotEqual",
+                "comment": "NotEqual can be used if two variables are equal but not expected to be equal.",
+                "code": "http.StatusInternalServerError",
+                "message": "variable %v equals variable %v, but not allowed to equal",
+                "param": [
+                    {
+                        "name": "X",
+                        "type": "string",
+                        "comment": "Name of the variable equal to Y"
+                    },
+                    {
+                        "name": "Y",
+                        "type": "string",
+                        "comment": "Name of the variable equal to X"
+                    }
+                ]
+            },
+            {
+                "name": "Duplicate",
+                "comment": "Duplicate can be used if an object already exists, but is only allowed to exist once, for example, a key.",
+                "code": "http.StatusForbidden",
+                "message": "%v is a duplicate and already exists",
+                "param": [
+                    {
+                        "name": "F",
+                        "type": "string",
+                        "comment": "F is the name of the object which already exists, for example, the name of a key"
+                    }
+                ]
+            },
+            {
+                "name": "Locked",
+                "comment": "Locked can be used if a service is locked, for example, because it is still running.",
+                "code": "http.StatusLocked",
+                "message": "%v is locked",
+                "param": [
+                    {
+                        "name": "S",
+                        "type": "string",
+                        "comment": "S is the name of the service which is locked"
+                    }
+                ]
+            }
+        ]
+    }
+}

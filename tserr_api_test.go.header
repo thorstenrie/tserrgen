@@ -1,0 +1,35 @@
+package tserr
+
+// All tests for all exported error functions are implemented here, with the exception of NilPtr(). The
+// test of NilPtr() exists in a separate source file. Each error function runs through up to three
+// tests.
+//
+//     1) Test for all functions: returned error is not nil, holds an error message in valid
+//        JSON format and equals the expected error message
+//     2) Additional test for error functions with multiple arguments passed in a struct:
+//        Check for returned error if pointer to argument struct is nil
+//     3) Additional test for error functions with multiple arguments passed in a struct and
+//        one argument is of type error: Check if return value is nil in case provided
+//        error in argument struct is nil.
+//
+// The structure of all test functions follows the same pattern. For an example, please see
+// tests for Check: TestCheck, TestCheckNil, TestCheckNilErr
+//
+// Copyright (c) 2023 thorstenrie.
+// All Rights Reserved. Use is governed with GNU Affero General Public License v3.0
+// that can be found in the LICENSE file.
+
+// Import standard library packages
+import (
+    "fmt"     // fmt
+    "testing" // testing
+)
+
+// testcases for types string and error
+var (
+    strFoo   string  = "tserr_foo"        // testcase type string
+    errFoo   error   = fmt.Errorf(strFoo) // testcase type error
+    intFoo   int64   = 1234               // testcase type int64
+    floatFoo float64 = 1234               // testcase type float64
+)
+ 
