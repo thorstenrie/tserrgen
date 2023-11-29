@@ -20,7 +20,8 @@ func (code *Code) String() string {
 	return code.c
 }
 
-func (code *Code) Comment(c string) *Code {
+// Line comment
+func (code *Code) LineComment(c string) *Code {
 	if code == nil {
 		return nil
 	}
@@ -28,7 +29,8 @@ func (code *Code) Comment(c string) *Code {
 	return code
 }
 
-func (code *Code) FuncClose() *Code {
+// Block End with new line
+func (code *Code) FuncEnd() *Code {
 	if code == nil {
 		return nil
 	}
@@ -36,7 +38,8 @@ func (code *Code) FuncClose() *Code {
 	return code
 }
 
-func (code *Code) Close() *Code {
+// Block End
+func (code *Code) BlockEnd() *Code {
 	if code == nil {
 		return nil
 	}
@@ -44,6 +47,7 @@ func (code *Code) Close() *Code {
 	return code
 }
 
+// Function Call
 func (code *Code) Call(n string) *Code {
 	if code == nil {
 		return nil
@@ -52,7 +56,8 @@ func (code *Code) Call(n string) *Code {
 	return code
 }
 
-func (code *Code) ParamCloseln() *Code {
+// Parameters End + new line
+func (code *Code) ParamEndln() *Code {
 	if code == nil {
 		return nil
 	}
@@ -60,7 +65,8 @@ func (code *Code) ParamCloseln() *Code {
 	return code
 }
 
-func (code *Code) ParamClose() *Code {
+// Parameters End
+func (code *Code) ParamEnd() *Code {
 	if code == nil {
 		return nil
 	}
@@ -80,6 +86,7 @@ func (code *Code) Func1(a *Func1Args) *Code {
 	return code
 }
 
+// Type declaration for struct type
 func (code *Code) TypeStruct(n string) *Code {
 	if code == nil {
 		return nil
@@ -88,14 +95,20 @@ func (code *Code) TypeStruct(n string) *Code {
 	return code
 }
 
-func (code *Code) Var(a string, t string) *Code {
+type TypeArgs struct {
+	Name, Type string
+}
+
+// Type
+func (code *Code) Type(a *TypeArgs) *Code {
 	if code == nil {
 		return nil
 	}
-	code.c += fmt.Sprintf("%v %v\n", a, t)
+	code.c += fmt.Sprintf("%v %v\n", a.Name, a.Type)
 	return code
 }
 
+// IdentifierLIst
 func (code *Code) List() *Code {
 	if code == nil {
 		return nil
@@ -104,6 +117,7 @@ func (code *Code) List() *Code {
 	return code
 }
 
+// IdentifierList with new line
 func (code *Code) Listln() *Code {
 	if code == nil {
 		return nil
@@ -113,37 +127,55 @@ func (code *Code) Listln() *Code {
 }
 
 type SelArgs struct {
-	Var, Sel string
+	Val, Sel string
 }
 
-func (code *Code) SelVar(a *SelArgs) *Code {
+// Field Selector
+func (code *Code) SelField(a *SelArgs) *Code {
 	if code == nil {
 		return nil
 	}
-	code.c += fmt.Sprintf("%v.%v", a.Var, a.Sel)
+	code.c += fmt.Sprintf("%v.%v", a.Val, a.Sel)
 	return code
 }
 
-func (code *Code) SelFunc(a *SelArgs) *Code {
+// Method Selector
+func (code *Code) SelMethod(a *SelArgs) *Code {
 	if code == nil {
 		return nil
 	}
-	code.c += fmt.Sprintf("%v.%v(", a.Var, a.Sel)
+	code.c += fmt.Sprintf("%v.%v(", a.Val, a.Sel)
 	return code
 }
 
+// Expression
 type IfArgs struct {
-	Operand1, Operand2, Operator string
+	ExprLeft, ExprRight, Operator string
 }
 
+// If statement
 func (code *Code) If(a *IfArgs) *Code {
 	if code == nil {
 		return nil
 	}
-	code.c += fmt.Sprintf("if %v %v %v {\n", a.Operand1, a.Operator, a.Operand2)
+	code.c += fmt.Sprintf("if %v %v %v {\n", a.ExprLeft, a.Operator, a.ExprRight)
 	return code
 }
 
+type IfErrArgs struct {
+	Method, Operator string
+}
+
+// If statement for error handling using a simple statement
+func (code *Code) IfErr(a *IfErrArgs) *Code {
+	if code == nil {
+		return nil
+	}
+	code.c += fmt.Sprintf("if err := %v; err %v nil {\n", a.Method, a.Operator)
+	return code
+}
+
+// Return
 func (code *Code) Return() *Code {
 	if code == nil {
 		return nil
@@ -152,6 +184,7 @@ func (code *Code) Return() *Code {
 	return code
 }
 
+// Address operator
 func (code *Code) Addr() *Code {
 	if code == nil {
 		return nil
@@ -160,6 +193,7 @@ func (code *Code) Addr() *Code {
 	return code
 }
 
+// Identifier
 func (code *Code) Ident(n string) *Code {
 	if code == nil {
 		return nil
@@ -168,20 +202,25 @@ func (code *Code) Ident(n string) *Code {
 	return code
 }
 
-func (code *Code) Expr(n string) *Code {
+type AssignmentArgs struct {
+	ExprLeft, ExprRight string
+}
+
+// Assignment
+func (code *Code) Assignment(a *AssignmentArgs) *Code {
 	if code == nil {
 		return nil
 	}
-	code.c += fmt.Sprintf("%v = ", n)
+	code.c += fmt.Sprintf("%v = %v", a.ExprLeft, a.ExprRight)
 	return code
 }
 
-// t literal type
-func (code *Code) Literal(t string) *Code {
+// Composite Literal
+func (code *Code) CompositeLit(LiteralType string) *Code {
 	if code == nil {
 		return nil
 	}
-	code.c += fmt.Sprintf("%v{", t)
+	code.c += fmt.Sprintf("%v{", LiteralType)
 	return code
 }
 
@@ -189,10 +228,24 @@ type ShortVarDeclArgs struct {
 	Ident, Expr string
 }
 
+// Short variable declaration
 func (code *Code) ShortVarDecl(a *ShortVarDeclArgs) *Code {
 	if code == nil {
 		return nil
 	}
 	code.c += fmt.Sprintf("%v := %v\n", a.Ident, a.Expr)
+	return code
+}
+
+type KeyedElementArgs struct {
+	Key, Element string
+}
+
+// Keyed element of a Composite literal
+func (code *Code) KeyedElement(a *KeyedElementArgs) *Code {
+	if code == nil {
+		return nil
+	}
+	code.c += fmt.Sprintf("%v: %v,\n", a.Key, a.Element)
 	return code
 }
